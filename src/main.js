@@ -4,6 +4,7 @@ import axios from 'axios'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import postMessage from './postMessage.js'
+import router from './router/router.js'
 
 Vue.use(axios);
 Vue.use(ElementUI);
@@ -30,16 +31,10 @@ Vue.prototype.ajax = opt =>
         }).catch(error => console.log('接口异常'));
 
     } );
-
-const home = r => require.ensure([], () => r(require('./component/Home.vue')), 'home');
-const router = new VueRouter({
-    routes: [
-        {
-            name: "root", path: "/", component: home
-        }
-    ]
-})
 new Vue({
     el: '#app',
-    router
-})
+    router,
+    updated(){
+        console.log('123', router);
+    }
+});
