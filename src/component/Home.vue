@@ -3,8 +3,8 @@
     <div>
         <el-container>
             <el-header height="38px">Header</el-header>
-            <el-container>
-                <el-aside :style="{height: screenHeight+'px'}">
+            <el-container class="main">
+                <el-aside :style="{height: screenHeight+'px'}" class="main-menu scrollbar">
                     <el-menu
                             default-active="4"
                             class="el-menu-vertical-demo"
@@ -89,11 +89,34 @@
     </div>
 </template>
 <style>
-    .el-container .el-header{
-        height: 38px;
+
+    /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+    ::-webkit-scrollbar
+    {
+        width: 0px;
+        height: 0px;
+        background-color: #FFFFFF;
     }
+
+    /*定义滚动条轨道 内阴影+圆角*/
+    ::-webkit-scrollbar-track
+    {
+        -webkit-box-shadow: inset 0 0 1px rgba(0,0,0,0);
+        border-radius: 10px;
+        background-color: #FFFFFF;
+    }
+
+    /*定义滑块 内阴影+圆角*/
+    ::-webkit-scrollbar-thumb
+    {
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+        background-color: #555;
+    }
+
 </style>
 <script>
+
     export default {
         data(){
             return {
@@ -104,6 +127,9 @@
         },
         created(){
             let _this = this;
+            this.$store.dispatch('initMenuData').then(()=>{
+                console.log('dispatch data', this.$store.state.menuData)
+            })
             _this.axios.get('http://localhost:8080/emro_boss/loginmenu/getMenuTreeData')
                 .then(function (response) {
                     _this.menuData = response.data;
@@ -126,6 +152,7 @@
                 }else{
                     this.$router.push({path: path, query:{authName: authName}});
                 }
+                this.$store.commit('increment')
 
             }
         }

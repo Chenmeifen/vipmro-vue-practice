@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import Vuex from 'vuex'
 import VueRouter from 'vue-router'
 import axios from 'axios'
 import ElementUI from 'element-ui'
@@ -10,6 +11,7 @@ Vue.use(axios);
 Vue.use(ElementUI);
 Vue.use(VueRouter);
 Vue.use(postMessage);
+Vue.use(Vuex);
 Vue.prototype.axios = axios;
 Vue.prototype.ajax = opt =>
     new Promise( resolve => {
@@ -31,10 +33,34 @@ Vue.prototype.ajax = opt =>
         }).catch(error => console.log('接口异常'));
 
     } );
+
+const store = new Vuex.Store({
+    state: {
+        count: 0,
+        menuData: [],
+        menuTreeData: []
+    },
+    mutations: {
+        reset(state){
+            state.count = 0;
+        },
+        increment (state) {
+            state.count++
+        }
+    },
+    actions: {
+        initMenuData(state){
+            return axios.get('http://localhost:8080/emro_boss/loginmenu/getMenuData')
+                    .then(function (response) {
+                        state.menuData = response.data
+                        console.log('dispatch to handle menu data', state.menuData)
+                    });
+
+        }
+    }
+})
 new Vue({
     el: '#app',
     router,
-    updated(){
-        console.log('123', router);
-    }
+    store
 });

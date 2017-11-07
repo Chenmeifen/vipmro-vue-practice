@@ -37,10 +37,6 @@ axios.get('http://localhost:8080/emro_boss/loginmenu/getMenuData')
                 children
             }
         ];
-
         router.addRoutes(routes)
-        console.log('routesroutesroutesroutesroutes:', routes)
-        console.log('routerrouterrouterrouter:', router)
-        console.log('thisthisthisthisthisthis:', this)
     });
 export default router;
