@@ -2,9 +2,9 @@
 
     <div>
         <el-container>
-            <el-header height="38px">Header</el-header>
-            <el-container class="main">
-                <el-aside :style="{height: screenHeight+'px'}" class="main-menu scrollbar">
+            <el-header height="38px" class="main-top">Header</el-header>
+            <el-container :style="{height: screenHeight+'px'}" class="main">
+                <el-aside class="main-menu scrollbar">
                     <el-menu
                             default-active="4"
                             class="el-menu-vertical-demo"
@@ -77,14 +77,17 @@
                     </el-menu>
                 </el-aside>
                 <el-container>
-                    <el-header height="30px">
-                        <h1>{{authName}}</h1>
-                    </el-header>
+                    <!--<el-header height="30px">-->
+                        <!--<h1>{{authName}}</h1>-->
+                    <!--</el-header>-->
                     <el-main>
                         <router-view></router-view>
                     </el-main>
                 </el-container>
             </el-container>
+            <el-footer height="38px">
+                footer
+            </el-footer>
         </el-container>
     </div>
 </template>
@@ -93,9 +96,9 @@
     /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
     ::-webkit-scrollbar
     {
-        width: 0px;
-        height: 0px;
-        background-color: #FFFFFF;
+        width: 2px;
+        height: 8px;
+        background-color: #ffffff;
     }
 
     /*定义滚动条轨道 内阴影+圆角*/
@@ -121,7 +124,7 @@
         data(){
             return {
                 menuData: [],
-                screenHeight: document.documentElement.clientHeight - 30,
+                screenHeight: document.documentElement.clientHeight - 78,
                 authName:this.$route.query.authName
             }
         },
