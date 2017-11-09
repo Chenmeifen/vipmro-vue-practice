@@ -1,39 +1,18 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import VueRouter from 'vue-router'
-import axios from 'axios'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-import postMessage from './postMessage.js'
+import BossApi from './api'
 import router from './router/router.js'
+import postMessage from './postMessage.js'
 
-Vue.use(axios);
 Vue.use(ElementUI);
 Vue.use(VueRouter);
-Vue.use(postMessage);
 Vue.use(Vuex);
-Vue.prototype.axios = axios;
-Vue.prototype.ajax = opt =>
-    new Promise( resolve => {
-        var config = {
-            method: opt.method || 'GET',
-            url: opt.url || ''
-        }
-        if(opt.method && opt.method === 'POST'){
-            config.data = opt.data || {};
-        }else{
-            config.params = opt.data || {};
-        }
-        axios(config).then( res => {
-            if(res && res.data){
-                if(res.data.code === 200) {
-                    resolve(res.data);
-                }
-            }
-        }).catch(error => console.log('接口异常'));
-
-    } );
-
+Vue.use(BossApi);
+Vue.use(postMessage);
+Vue.prototype.BossApi = BossApi;
 const store = new Vuex.Store({
     state: {
         count: 0,
@@ -50,11 +29,10 @@ const store = new Vuex.Store({
     },
     actions: {
         initMenuData(state){
-            return axios.get('http://localhost:8080/emro_boss/loginmenu/getMenuData')
-                    .then(function (response) {
-                        state.menuData = response.data
-                        console.log('dispatch to handle menu data', state.menuData)
-                    });
+            return Vue.prototype.BossApi.getMenuData().then((response) => {
+                state.menuData = response.data;
+                console.log('dispatch to handle menu data', state.menuData.length)
+            });
 
         }
     }
