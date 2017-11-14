@@ -10,7 +10,7 @@
         <br>
         <br>
         <el-input type="textarea" v-model="loginName"></el-input>
-        <el-input type="textarea" v-model="resMsg"></el-input>
+        <el-input class="heightB" type="textarea" v-model="resMsg"></el-input>
         <br>
         <br>
         <br>
@@ -22,6 +22,11 @@
         </div>
     </div>
 </template>
+<style>
+    .heightB textarea{
+        height: 300px;
+    }
+</style>
 <script>
     export default {
         data(){
@@ -36,14 +41,14 @@
         methods:{
             postMsg(){
                 let iframe = this.$el.querySelector(".iframe").contentWindow;
-                this.resMsg = "waiting";
+                this.resMsg += "\nwaiting";
                 this.$postMessage({loginName: this.loginName}, this.url, iframe);
             },
             getMsg(){
                 this.postMsg()
                 this.$receiveMessage((res)=>{
                     console.log("rtn", res.data)
-                    this.$data.resMsg = JSON.parse(res.data).resMsg
+                    this.$data.resMsg += '|' + JSON.parse(res.data).resMsg
                 }, this.url)
             }
         }

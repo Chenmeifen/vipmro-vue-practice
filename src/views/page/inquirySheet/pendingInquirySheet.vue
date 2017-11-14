@@ -62,7 +62,7 @@
             },
             onEditorChange({ editor, html, text }) {
                 console.log('editor change!', editor, html, text)
-                this.content = html
+                this.content = html; // 加了这个之后 编辑器并不好编辑 ？？
             }
         },
         // get the current quill instace object.

@@ -5,6 +5,7 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import BossApi from './api'
 import router from './router/router.js'
+import filter from './filter'
 import postMessage from './postMessage.js'
 
 Vue.use(ElementUI);
@@ -12,6 +13,7 @@ Vue.use(VueRouter);
 Vue.use(Vuex);
 Vue.use(BossApi);
 Vue.use(postMessage);
+Vue.use(filter);
 Vue.prototype.BossApi = BossApi;
 const store = new Vuex.Store({
     state: {
