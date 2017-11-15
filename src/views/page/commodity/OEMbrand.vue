@@ -86,6 +86,13 @@
         text-align: center;
         font-size: 12px;
     }
+    .el-table .warning-row {
+        background: oldlace;
+    }
+
+    .el-table .success-row {
+        background: #f0f9eb;
+    }
 </style>
 <script>
     import bossApi from '../../../api'
@@ -211,17 +218,17 @@
 
             },
             tableRowClassName({row, rowIndex}) {
-                if (rowIndex === 1) {
+                if (rowIndex % 4 ===  0) {
                     return 'warning-row';
-                } else if (rowIndex === 3) {
+                } else if(rowIndex % 4 ===  2){
                     return 'success-row';
                 }
                 return '';
             },
             headerRowStyle({row, rowIndex}){
-
-//                console.log(rowIndex, row);
-                // todo how to do
+                return {
+                    color: "#404040"
+                }
             }
         },
         filters: {

@@ -6,87 +6,117 @@
             <el-breadcrumb-item>询价单列表</el-breadcrumb-item>
         </el-breadcrumb>
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
-            <el-form-item label="审批人">
-                <el-input v-model="formInline.user" placeholder="审批人"></el-input>
+            <el-form-item label="询价客户">
+                <el-input v-model="formInline.dealerName" placeholder="询价客户"></el-input>
             </el-form-item>
-            <el-form-item label="活动区域">
-                <el-select v-model="formInline.region" placeholder="活动区域">
-                    <el-option label="区域一" value="shanghai"></el-option>
-                    <el-option label="区域二" value="beijing"></el-option>
+            <el-form-item label="提交时间">
+                <el-date-picker
+                        v-model="formInline.startCreatedAt"
+                        type="date"
+                        placeholder="开始时间"
+                        value-format="yyyy-MM-dd"
+                        :picker-options="pickerOptions0">
+                </el-date-picker>
+                -
+                <el-date-picker
+                        v-model="formInline.endCreatedAt"
+                        type="date"
+                        placeholder="结束时间"
+                        value-format="yyyy-MM-dd"
+                        :picker-options="pickerOptions0">
+                </el-date-picker>
+            </el-form-item>
+            <el-form-item label="单号">
+                <el-input v-model="formInline.id" placeholder="单号"></el-input>
+            </el-form-item>
+            <el-form-item label="订货号/型号">
+                <el-input v-model="formInline.queryNo" placeholder="订货号/型号"></el-input>
+            </el-form-item>
+            <el-form-item label="状态">
+                <el-select v-model="formInline.handleStatus" clearable placeholder="状态">
+                    <el-option label="待提交" value="0"></el-option>
+                    <el-option label="待处理" value="1"></el-option>
+                    <el-option label="处理中" value="2"></el-option>
+                    <el-option label="处理完成" value="3"></el-option>
+                    <el-option label="已关闭" value="4"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="创建人">
+                <el-select v-model="formInline.createdBy" placeholder="创建人" clearable>
+                    <el-option v-for="item in creatorList" :value="item.id" :label="item.staffName"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="onSubmit">查询</el-button>
+                <el-button type="primary" icon="el-icon-search" @click="onSubmit">查询</el-button>
             </el-form-item>
         </el-form>
-
+        <div>
+            <el-button type="primary" @click="linkTo">发起询价单</el-button>
+        </div>
+        <br>
         <el-table
-                :data="tableData3"
-                style="width: 48%;float: left"
-                height="200">
+                :data="inquiryList"
+                highlight-current-row
+                border
+                @current-change="handleCurrentChange"
+                ref="singleTable"
+                style="width: 100%">
             <el-table-column
-                    prop="date"
-                    label="日期"
-                    width="150">
+                    prop="id"
+                    label="单号"
+                    width="60">
             </el-table-column>
             <el-table-column
-                    fixed
-                    prop="name"
-                    label="姓名"
-                    width="120">
+                    prop="dealerName"
+                    label="询价客户"
+                    width="180">
             </el-table-column>
             <el-table-column
-                    prop="province"
-                    label="省份"
-                    width="120">
+                    label="提交时间">
+                <template slot-scope="scope">
+                    <span>{{ scope.row.createdAt | dateFormat }}</span>
+                </template>
             </el-table-column>
             <el-table-column
-                    prop="city"
-                    label="市区"
-                    width="120">
+                    label="状态">
+                <template slot-scope="scope">
+                    <span>{{ scope.row.handleStatus | handleStatsTrans }}</span>
+                </template>
             </el-table-column>
             <el-table-column
-                    prop="address"
-                    label="地址"
-                    width="300">
+                    label="询价处理时间">
+                <template slot-scope="scope">
+                    <span>{{ scope.row.updatedAt | dateFormat }}</span>
+                </template>
             </el-table-column>
             <el-table-column
-                    prop="zip"
-                    label="邮编"
-                    width="120">
+                    prop="creatorName"
+                    label="创建人">
+            </el-table-column>
+            <el-table-column
+                    prop="remark"
+                    label="备注">
+            </el-table-column>
+            <el-table-column
+                    label="操作">
+                <template slot-scope="scope" v-if="scope.row.isCanRevoke==1">
+                    <el-button type="danger"
+                            size="mini"
+                            @click="handleRevoke(scope.$index, scope.row)">撤回
+                    </el-button>
+                </template>
             </el-table-column>
         </el-table>
-
-        <el-table
-                ref="multipleTable"
-                :data="tableData3"
-                tooltip-effect="dark"
-                style="width: 48%;float: right"
-                height="200"
-                @selection-change="handleSelectionChange">
-            <el-table-column
-                    type="selection"
-                    width="55">
-            </el-table-column>
-            <el-table-column
-                    label="日期"
-                    width="120">
-                <template slot-scope="scope">{{ scope.row.date }}</template>
-            </el-table-column>
-            <el-table-column
-                    prop="name"
-                    label="姓名"
-                    width="120">
-            </el-table-column>
-            <el-table-column
-                    prop="address"
-                    label="地址"
-                    show-overflow-tooltip>
-            </el-table-column>
-        </el-table>
-        <div style="margin-top: 20px;float: right">
-            <el-button @click="toggleSelection([tableData3[1], tableData3[2]])">切换第二、第三行的选中状态</el-button>
-            <el-button @click="toggleSelection()">取消选择</el-button>
+        <div class="block" style="text-align: right">
+            <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="curPage"
+                    :page-sizes="[10, 20, 50, 100]"
+                    :page-size="10"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="total">
+            </el-pagination>
         </div>
     </div>
 </template>
@@ -96,82 +126,77 @@
         height: 38px;
         margin-bottom: 6px;
     }
+    .select-bg{
+        background: #8bc3ff;
+    }
 </style>
+
 <script>
+    import bossApi from '../../../api'
     export default {
         data() {
             return {
-                formInline: {
-                    user: '',
-                    region: ''
+                pickerOptions0: {
+                    disabledDate(time) {
+                        return time.getTime() > Date.now();
+                    }
                 },
-                tableData3: [{
-                    date: '2016-05-03',
-                    name: '王小虎',
-                    province: '上海',
-                    city: '普陀区',
-                    address: '上海市普陀区金沙江路 1518 弄',
-                    zip: 200333
-                }, {
-                    date: '2016-05-02',
-                    name: '王小虎',
-                    province: '上海',
-                    city: '普陀区',
-                    address: '上海市普陀区金沙江路 1518 弄',
-                    zip: 200333
-                }, {
-                    date: '2016-05-04',
-                    name: '王小虎',
-                    province: '上海',
-                    city: '普陀区',
-                    address: '上海市普陀区金沙江路 1518 弄',
-                    zip: 200333
-                }, {
-                    date: '2016-05-01',
-                    name: '王小虎',
-                    province: '上海',
-                    city: '普陀区',
-                    address: '上海市普陀区金沙江路 1518 弄',
-                    zip: 200333
-                }, {
-                    date: '2016-05-08',
-                    name: '王小虎',
-                    province: '上海',
-                    city: '普陀区',
-                    address: '上海市普陀区金沙江路 1518 弄',
-                    zip: 200333
-                }, {
-                    date: '2016-05-06',
-                    name: '王小虎',
-                    province: '上海',
-                    city: '普陀区',
-                    address: '上海市普陀区金沙江路 1518 弄',
-                    zip: 200333
-                }, {
-                    date: '2016-05-07',
-                    name: '王小虎',
-                    province: '上海',
-                    city: '普陀区',
-                    address: '上海市普陀区金沙江路 1518 弄',
-                    zip: 200333
-                }]
+                formInline: {
+                    page:0,
+                    rows:10,
+                    startCreatedAt:'',
+                    endCreatedAt:'',
+                    queryNo:'',
+                    id:'',
+                    dealerName:'',
+                    handleStatus:'',
+                    createdBy:'',
+                },
+                inquiryList:[],
+                creatorList:[],
+                total:0,
+                curPage:0,
+                currentRow: null
             }
+        },
+        created(){
+            bossApi.findBusinessByAuth().then((res) => {
+                this.creatorList = res.data;
+                this.onSubmit();
+            });
         },
         methods: {
             onSubmit() {
                 console.log('submit!');
+                bossApi.getInquiryList(this.formInline).then((res) => {
+                    this.inquiryList = res.data.list;
+                    this.total = res.data.count
+                })
             },
-            toggleSelection(rows) {
-                if (rows) {
-                    rows.forEach(row => {
-                        this.$refs.multipleTable.toggleRowSelection(row);
-                    });
-                } else {
-                    this.$refs.multipleTable.clearSelection();
+            handleCurrentChange(val){
+                if(val > 0){
+                    this.formInline.page = val - 1;
+                    this.onSubmit();
                 }
             },
-            handleSelectionChange(val) {
-                this.multipleSelection = val;
+            handleSizeChange(val){
+                this.formInline.rows = val;
+                this.onSubmit();
+            },
+            linkTo(){
+                this.$router.push({path: "/page/inquirySheet/addinquirySheet", query:{authName: "发起询价单"}});
+            }
+        },
+        filters:{
+            handleStatsTrans(value){
+                switch (value){
+                    case 0: return '待提交';
+                    case 1: return '待处理';
+                    case 2: return '处理中';
+                    case 3: return '处理完成';
+                    case 4: return '已关闭';
+                }
+                return '';
             }
         }
     }

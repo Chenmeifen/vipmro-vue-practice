@@ -4,7 +4,7 @@
  * @date 2017/11/14
  */
 import Vue from 'vue';
-let defaultFormat = 'yyyy年MM月dd日 hh:mm:ss'
+let defaultFormat = 'yyyy-MM-dd hh:mm:ss';
 Vue.filter("dateFormat", (value, format)=>{
     let date = new Date(value);
     if(!format){

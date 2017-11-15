@@ -3,8 +3,8 @@
     <div>
         <el-container>
             <el-header height="38px" class="main-top">Header</el-header>
-            <el-container :style="{height: screenHeight+'px'}" class="main">
-                <el-aside class="main-menu scrollbar">
+            <el-container  class="main">
+                <el-aside class="main-menu scrollbar" :style="{height: screenHeight+'px'}">
                     <el-menu
                             :default-active="$route.path"
                             class="el-menu-vertical-demo"
@@ -76,7 +76,7 @@
                         </template>
                     </el-menu>
                 </el-aside>
-                <el-container>
+                <el-container :style="{height: screenHeight+'px'}">
                     <!--<el-header height="30px">-->
                         <!--<h1>{{authName}}</h1>-->
                     <!--</el-header>-->
@@ -1379,7 +1379,8 @@
                         "iconCls": ""
                     }
                 ],
-                screenHeight: document.documentElement.clientHeight - 78,
+//                screenHeight: document.documentElement.clientHeight - 78,
+                screenHeight: 680,
                 authName:this.$route.query.authName,
                 routePath:this.$route.path,
             }

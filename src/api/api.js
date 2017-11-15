@@ -50,7 +50,19 @@ export const updateBrandOem = (brandOem)=>{
 export const deleteBrandOem = (id) => {
     return axios.delete(`${base}oem/deleteBrandOem?id=${id}`)
 };
-
+// 询价单
+export const getInquiryList = (inquiryParam)=>{
+    return axios.post(`${base}inquiry/list`, qs.stringify(inquiryParam), headers)
+};
+export const findBusinessByAuth = ()=>{
+    return axios.get(`${base}inquiry/findBusinessByAuth`)
+};
+export const getSellerGoods = (inquiryParam)=>{
+    return axios.post(`${base}inquiry/sellerGoods`, qs.stringify(inquiryParam), headers)
+};
+export const findDealers = (cusForm)=>{
+    return axios.get(`${base}inquiry/findDealers?dealerName=${cusForm.dealerName}&rows=${cusForm.rows}&page=${cusForm.page}`)
+};
 
 
 
