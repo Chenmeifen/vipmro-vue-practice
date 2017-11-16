@@ -5,7 +5,7 @@
             <el-breadcrumb-item :to="{ path: '/page/index' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item>询价单列表</el-breadcrumb-item>
         </el-breadcrumb>
-        <el-form :inline="true" :model="formInline" class="demo-form-inline">
+        <el-form :inline="true" :model="formInline" class="demo-form-inline" size="mini">
             <el-form-item label="询价客户">
                 <el-input v-model="formInline.dealerName" placeholder="询价客户"></el-input>
             </el-form-item>
@@ -51,7 +51,7 @@
             </el-form-item>
         </el-form>
         <div>
-            <el-button type="primary" @click="linkTo">发起询价单</el-button>
+            <el-button type="primary" @click="linkTo" size="small">发起询价单</el-button>
         </div>
         <br>
         <el-table
@@ -60,7 +60,7 @@
                 border
                 @current-change="handleCurrentChange"
                 ref="singleTable"
-                style="width: 100%">
+                style="width: 100%" size="mini">
             <el-table-column
                     prop="id"
                     label="单号"
@@ -69,40 +69,40 @@
             <el-table-column
                     prop="dealerName"
                     label="询价客户"
-                    width="180">
+                    width="260">
             </el-table-column>
             <el-table-column
-                    label="提交时间">
+                    label="提交时间" width="140px">
                 <template slot-scope="scope">
                     <span>{{ scope.row.createdAt | dateFormat }}</span>
                 </template>
             </el-table-column>
             <el-table-column
-                    label="状态">
+                    label="状态" width="90">
                 <template slot-scope="scope">
                     <span>{{ scope.row.handleStatus | handleStatsTrans }}</span>
                 </template>
             </el-table-column>
             <el-table-column
-                    label="询价处理时间">
+                    label="询价处理时间" width="140px">
                 <template slot-scope="scope">
                     <span>{{ scope.row.updatedAt | dateFormat }}</span>
                 </template>
             </el-table-column>
             <el-table-column
                     prop="creatorName"
-                    label="创建人">
+                    label="创建人" width="180">
             </el-table-column>
             <el-table-column
                     prop="remark"
                     label="备注">
             </el-table-column>
             <el-table-column
-                    label="操作">
+                    label="操作" width="80px">
                 <template slot-scope="scope" v-if="scope.row.isCanRevoke==1">
                     <el-button type="danger"
-                            size="mini"
-                            @click="handleRevoke(scope.$index, scope.row)">撤回
+                               size="mini"
+                               @click="handleRevoke(scope.$index, scope.row)">撤回
                     </el-button>
                 </template>
             </el-table-column>
@@ -122,11 +122,12 @@
 </template>
 <style>
 
-    .el-breadcrumb{
+    .el-breadcrumb {
         height: 38px;
         margin-bottom: 6px;
     }
-    .select-bg{
+
+    .select-bg {
         background: #8bc3ff;
     }
 </style>
@@ -142,20 +143,20 @@
                     }
                 },
                 formInline: {
-                    page:0,
-                    rows:10,
-                    startCreatedAt:'',
-                    endCreatedAt:'',
-                    queryNo:'',
-                    id:'',
-                    dealerName:'',
-                    handleStatus:'',
-                    createdBy:'',
+                    page: 0,
+                    rows: 10,
+                    startCreatedAt: '',
+                    endCreatedAt: '',
+                    queryNo: '',
+                    id: '',
+                    dealerName: '',
+                    handleStatus: '',
+                    createdBy: '',
                 },
-                inquiryList:[],
-                creatorList:[],
-                total:0,
-                curPage:0,
+                inquiryList: [],
+                creatorList: [],
+                total: 0,
+                curPage: 0,
                 currentRow: null
             }
         },
@@ -167,14 +168,13 @@
         },
         methods: {
             onSubmit() {
-                console.log('submit!');
                 bossApi.getInquiryList(this.formInline).then((res) => {
                     this.inquiryList = res.data.list;
                     this.total = res.data.count
                 })
             },
             handleCurrentChange(val){
-                if(val > 0){
+                if (val > 0) {
                     this.formInline.page = val - 1;
                     this.onSubmit();
                 }
@@ -184,17 +184,22 @@
                 this.onSubmit();
             },
             linkTo(){
-                this.$router.push({path: "/page/inquirySheet/addinquirySheet", query:{authName: "发起询价单"}});
+                this.$router.push({path: "/page/inquirySheet/addinquirySheet", query: {authName: "发起询价单"}});
             }
         },
-        filters:{
+        filters: {
             handleStatsTrans(value){
-                switch (value){
-                    case 0: return '待提交';
-                    case 1: return '待处理';
-                    case 2: return '处理中';
-                    case 3: return '处理完成';
-                    case 4: return '已关闭';
+                switch (value) {
+                    case 0:
+                        return '待提交';
+                    case 1:
+                        return '待处理';
+                    case 2:
+                        return '处理中';
+                    case 3:
+                        return '处理完成';
+                    case 4:
+                        return '已关闭';
                 }
                 return '';
             }

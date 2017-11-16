@@ -1,12 +1,18 @@
 <template>
     <div>
+
+        <el-breadcrumb separator="/">
+            <el-breadcrumb-item :to="{ path: '/page/index' }">首页</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/page/inquirySheet/inquirySheetList' }">询价单列表</el-breadcrumb-item>
+            <el-breadcrumb-item>生成询价单</el-breadcrumb-item>
+        </el-breadcrumb>
         <div>
             <el-form :inline="true" :model="formInline" class="demo-form-inline">
                 <el-form-item label="询价客户">
                     <el-input v-model="formInline.dealerName" placeholder="询价客户" disabled></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" plain @click="selectCus" >选择客户</el-button>
+                    <el-button type="primary" plain @click="selectCus">选择客户</el-button>
                 </el-form-item>
             </el-form>
             <div>
@@ -47,7 +53,7 @@
             </div>
         </div>
         <br>
-        <el-dialog title="询价客户" :visible.sync="dialogTableVisible" top="5vh" >
+        <el-dialog title="询价客户" :visible.sync="dialogTableVisible" top="5vh">
             <el-form :inline="true" :model="cusForm" class="demo-form-inline" size="small">
                 <el-form-item label="客户名称">
                     <el-input v-model="cusForm.dealerName" placeholder="客户名称"></el-input>
@@ -86,7 +92,7 @@
     export default {
         data(){
             return {
-                formInline:{
+                formInline: {
                     dealerName: ''
                 },
                 cusForm: {
@@ -94,23 +100,23 @@
                     rows: 10,
                     dealerName: '',
                 },
-                queryInfo:'',
-                sellerGoodsList:[],
-                cusData:[],
-                cusCount:0,
-                remark:'',
-                selectOneRow:null,
+                queryInfo: '',
+                sellerGoodsList: [],
+                cusData: [],
+                cusCount: 0,
+                remark: '',
+                selectOneRow: null,
                 dialogTableVisible: false
             }
         },
-        methods:{
+        methods: {
             onSubmit(){
 
             },
             addSellerGoods(){
                 let str = this.queryInfo.trim().replace(/' '+/g, ' ');
                 str = str.replace(/\t+/g, ' ');
-                if(!str){
+                if (!str) {
                     this.$message({
                         "type": "error",
                         "message": "请输入数据"
@@ -119,25 +125,25 @@
                 }
                 let list = str.split("\n");
                 let queryInfo = [];
-                for(let i = 0; i < list.length; i++){
+                for (let i = 0; i < list.length; i++) {
                     let ss = list[i].trim().replace(' ', ',').replace('，', ',');
-                    if(!ss){
+                    if (!ss) {
                         continue;
                     }
                     let arr = ss.split(",");
                     let noEmpArr = [];
-                    for(let k = 0; k < arr.length; k++){
-                        if(arr[k].trim()){
+                    for (let k = 0; k < arr.length; k++) {
+                        if (arr[k].trim()) {
                             noEmpArr.push(arr[k].trim())
                         }
                     }
-                    if(noEmpArr.length === 2){
+                    if (noEmpArr.length === 2) {
                         queryInfo.push(
                             {
                                 queryNo: noEmpArr[0].trim(), num: noEmpArr[1].trim()
                             }
                         )
-                    }else{
+                    } else {
                         this.$message({
                             "type": "error",
                             "message": "格式有误"
@@ -170,15 +176,15 @@
                 this.queryCus();
             },
             handleCurrentChange(val){
-                if(val > 0){
+                if (val > 0) {
                     this.cusForm.page = val - 1;
                     this.queryCus();
                 }
             },
             selectOneCus(row){
-                if(row.dealerName){
+                if (row.dealerName) {
                     this.formInline.dealerName = row.dealerName;
-                }else{
+                } else {
                     this.formInline.dealerName = this.selectOneRow.dealerName;
                 }
                 this.dialogTableVisible = false;

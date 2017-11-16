@@ -86,6 +86,7 @@
         text-align: center;
         font-size: 12px;
     }
+
     .el-table .warning-row {
         background: oldlace;
     }
@@ -218,9 +219,9 @@
 
             },
             tableRowClassName({row, rowIndex}) {
-                if (rowIndex % 4 ===  0) {
+                if (rowIndex % 4 === 0) {
                     return 'warning-row';
-                } else if(rowIndex % 4 ===  2){
+                } else if (rowIndex % 4 === 2) {
                     return 'success-row';
                 }
                 return '';
