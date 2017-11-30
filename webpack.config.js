@@ -70,11 +70,11 @@ module.exports = (options = {}) => ({
         host: 'localhost',
         port: 8090,
         proxy: {
-            '/api': {
+            '/emro_boss': {
                 target: 'http://localhost:8080/emro_boss',
                 changeOrigin: true,
                 pathRewrite: {
-                    '^/api': ''
+                    '^/emro_boss': ''
                 }
             }
         },

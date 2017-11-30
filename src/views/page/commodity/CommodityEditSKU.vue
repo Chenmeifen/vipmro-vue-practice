@@ -47,8 +47,8 @@
             getMsg(){
                 this.postMsg()
                 this.$receiveMessage((res)=>{
-                    console.log("rtn", res.data)
-                    this.$data.resMsg += '|' + JSON.parse(res.data).resMsg
+                    console.log("rtn", res)
+                    this.$data.resMsg += '|' + JSON.parse(res).resMsg
                 }, this.url)
             }
         }

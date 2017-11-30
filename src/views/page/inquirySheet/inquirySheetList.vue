@@ -133,7 +133,7 @@
 </style>
 
 <script>
-    import bossApi from '../../../api'
+    import {findBusinessByAuth, getInquiryList} from '../../../api/bossApi'
     export default {
         data() {
             return {
@@ -161,16 +161,16 @@
             }
         },
         created(){
-            bossApi.findBusinessByAuth().then((res) => {
-                this.creatorList = res.data;
+            findBusinessByAuth().then((res) => {
+                this.creatorList = res;
                 this.onSubmit();
             });
         },
         methods: {
             onSubmit() {
-                bossApi.getInquiryList(this.formInline).then((res) => {
-                    this.inquiryList = res.data.list;
-                    this.total = res.data.count
+                getInquiryList(this.formInline).then((res) => {
+                    this.inquiryList = res.list;
+                    this.total = res.count
                 })
             },
             handleCurrentChange(val){

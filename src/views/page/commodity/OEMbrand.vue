@@ -129,14 +129,14 @@
         methods: {
             onSubmit(){
                 bossApi.getBrandOemList(this.formInline.brandName).then((res) => {
-                    this.brandList = res.data;
+                    this.brandList = res;
                 })
             },
             saveBrand(){
                 this.$refs[this.brandFormName].validate((valid) => {
                     if (valid) {
                         let rtnFn = (res) => {
-                            if (res.data.code === 0) {
+                            if (res.code === 0) {
                                 this.dialogFormVisible = false;
                                 this.onSubmit();
                                 this.$message({
@@ -146,7 +146,7 @@
                             } else {
                                 this.$message({
                                     type: "error",
-                                    message: res.data.msg ? res.data.msg : "保存失败"
+                                    message: res.msg ? res.msg : "保存失败"
                                 })
                             }
                         };
@@ -181,7 +181,7 @@
                     type: 'warning'
                 }).then(() => {
                     bossApi.deleteBrandOem(row.id).then((res) => {
-                        if (res.data.code === 0) {
+                        if (res.code === 0) {
                             this.onSubmit();
                             this.$message({
                                 type: "success",

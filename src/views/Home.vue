@@ -15,17 +15,17 @@
                             active-text-color="#ffd04b">
                         <template v-for="(item, index) in menuData">
                             <template v-if="item.child.length>0">
-                                <el-submenu :key="index" :index="(index + 4) + ''">
+                                <el-submenu :key="index" :index="index + ''">
                                     <template slot="title">
                                         <i class="el-icon-menu"></i>
                                         <span>{{item.authName}}</span>
                                     </template>
                                     <template v-for="(childItem, childIdx) in item.child" >
                                         <template v-if="childItem.child && childItem.child.length > 0">
-                                            <el-submenu :index="(index + 4) + '-' + childIdx">
+                                            <el-submenu :index="index + '-' + childIdx">
                                                 <template slot="title">{{childItem.authName}}</template>
                                                 <template v-for="(childThreeItem, childTreeIdx) in childItem.child">
-                                                    <el-menu-item :index="childThreeItem.path" @click="linkTo(childThreeItem.path,childThreeItem.authName)">
+                                                    <el-menu-item :index="childThreeItem.path?childThreeItem.path:(index + '-' + childIdx + '-'+ childTreeIdx )" @click="linkTo(childThreeItem.path,childThreeItem.authName)">
                                                         {{childThreeItem.authName}}
                                                     </el-menu-item>
                                                 </template>
@@ -33,14 +33,14 @@
                                         </template>
                                         <template v-else="">
                                             <el-menu-item-group>
-                                                <el-menu-item :index="childItem.path" @click="linkTo(childItem.path,childItem.authName)">{{childItem.authName}}</el-menu-item>
+                                                <el-menu-item :index="childItem.path?childItem.path:(index + '-' + childIdx)" @click="linkTo(childItem.path,childItem.authName)">{{childItem.authName}}</el-menu-item>
                                             </el-menu-item-group>
                                         </template>
                                     </template>
                                 </el-submenu >
                             </template>
                             <template v-else="">
-                                <el-menu-item :key="index"  :index="item.path" @click="linkTo(item.path,item.authName)">
+                                <el-menu-item :key="index" :index="item.path?item.path:index+''" @click="linkTo(item.path,item.authName)">
                                     <i class="el-icon-setting"></i>
                                     <span slot="title">
                                             {{item.authName}}
@@ -1353,8 +1353,8 @@
                         "iconCls": ""
                     }
                 ],
-//                screenHeight: document.documentElement.clientHeight - 78,
-                screenHeight: 680,
+                screenHeight: document.documentElement.clientHeight - 78,
+//                screenHeight: 680,
                 authName:this.$route.query.authName,
                 routePath:this.$route.path,
             }
@@ -1367,6 +1367,10 @@
 //            this.BossApi.getMenuTreeData().then((response)=>{
 //                this.menuData = response.data;
 //            });
+        },
+        mounted(){
+//            console.log("mounted")
+//            this.$router.push({path: '/page/index'});
         },
         methods: {
             handleOpen(key, keyPath) {

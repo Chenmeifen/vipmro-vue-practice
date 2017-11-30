@@ -16,6 +16,12 @@
         <div>
             <el-button type="primary" size="medium" @click="dialogVisible=true">新增品牌关系</el-button>
         </div>
+        <el-transfer
+                    filterable
+                    v-model="selectList"
+                    :data="dataList"
+                    :titles="['待选品牌', '已选品牌']">
+        </el-transfer>
         <el-dialog title="品牌经理关系维护" :visible.sync="dialogVisible">
             <el-transfer
                     filterable
@@ -47,7 +53,7 @@
         },
         created(){
             bossApi.brandNameList().then((res) => {
-                let list = res.data;
+                let list = res;
                 for (let i = 0; i < list.length; i++) {
                     this.dataList.push(
                         {

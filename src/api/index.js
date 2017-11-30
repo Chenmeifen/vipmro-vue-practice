@@ -1,5 +1,5 @@
 
 
-import * as api from './api'
+import * as bossApi from './bossApi'
 
-export default api
+export default bossApi

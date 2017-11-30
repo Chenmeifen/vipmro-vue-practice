@@ -1048,6 +1048,21 @@ let children = [];
 //         });
 //     }
 // }
+dataRoutes.forEach(v => {
+    let p = v.path;
+    let rp = v.requirePath;
+    if(!p){
+        return;
+    }
+    children.push({
+        path: p,
+        component:  function (r) {
+            require.ensure([], function () {
+                return r(require('@/views'+rp))
+            });
+        }
+    });
+});
 let routes = [
     {
         name: "root", path: "/", component: home,
@@ -1057,28 +1072,28 @@ let routes = [
 let router = new VueRouter({
     routes
 });
-BossApi.getMenuData()
-    .then((response)=> {
-        for (let i = 0; i < response.data.length; i++) {
-            let p = response.data[i].path;
-            let rp = response.data[i].requirePath;
-            if (p) {
-                children.push({
-                    path: p,
-                    component:  function (r) {
-                        require.ensure([], function () {
-                            return r(require('@/views'+rp))
-                        });
-                    }
-                });
-            }
-        }
-        let routes = [
-            {
-                name: "root", path: "/", component: home,
-                children
-            }
-        ];
-        router.addRoutes(routes)
-    });
+// BossApi.getMenuData()
+//     .then((response)=> {
+//         for (let i = 0; i < response.data.length; i++) {
+//             let p = response.data[i].path;
+//             let rp = response.data[i].requirePath;
+//             if (p) {
+//                 children.push({
+//                     path: p,
+//                     component:  function (r) {
+//                         require.ensure([], function () {
+//                             return r(require('@/views'+rp))
+//                         });
+//                     }
+//                 });
+//             }
+//         }
+//         let routes = [
+//             {
+//                 name: "root", path: "/", component: home,
+//                 children
+//             }
+//         ];
+//         router.addRoutes(routes)
+//     });
 export default router;

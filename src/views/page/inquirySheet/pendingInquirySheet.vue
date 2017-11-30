@@ -147,18 +147,18 @@
         },
         created(){
             bossApi.curPurchaseBrand().then((res) => {
-                this.purchaseBrandList = res.data
+                this.purchaseBrandList = res
             });
             bossApi.findBusinessByPurchase().then((res) => {
-                this.createdByList = res.data
+                this.createdByList = res
             });
             this.queryListFn();
         },
         methods: {
             queryListFn(){
                 bossApi.getInquiryGoodsList(this.queryForm).then((res) => {
-                    this.inquiryGoodsList = res.data.list;
-                    this.count = res.data.count;
+                    this.inquiryGoodsList = res.list;
+                    this.count = res.count;
                 })
             },
             handleCurrentChange(val){

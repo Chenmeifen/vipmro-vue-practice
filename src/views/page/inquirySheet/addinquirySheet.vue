@@ -152,7 +152,7 @@
                     }
                 }
                 bossApi.getSellerGoods({queryList: JSON.stringify(queryInfo)}).then((res) => {
-                    this.sellerGoodsList = res.data.data;
+                    this.sellerGoodsList = res.data;
                 })
             },
             removeCurRow(rowIndex, row){
@@ -163,8 +163,8 @@
             },
             queryCus(){
                 bossApi.findDealers(this.cusForm).then((res) => {
-                    this.cusData = res.data.list;
-                    this.cusCount = res.data.count;
+                    this.cusData = res.list;
+                    this.cusCount = res.count;
                 })
             },
             selectCus(){
